@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+  <android.support.constraint.Guideline
+      android:id="@+id/guideline"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_percent="0.50"
+      />
+
+  <!-- currency id ... -->
+  <TextView
+      android:id="@+id/text_currency_id_label"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/padding_default"
+      android:paddingEnd="@dimen/padding_half"
+      android:paddingStart="@dimen/padding_half"
+      android:paddingTop="@dimen/padding_default"
+      android:text="@string/label_currency_id"
+      android:textSize="@dimen/text_size_default"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toStartOf="@+id/guideline"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  <TextView
+      android:id="@+id/text_currency_id"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/padding_default"
+      android:paddingEnd="@dimen/padding_half"
+      android:paddingStart="@dimen/padding_half"
+      android:paddingTop="@dimen/padding_default"
+      android:textSize="@dimen/text_size_default"
+      app:layout_constraintStart_toEndOf="@+id/guideline"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="124"
+      />
+  <!-- ... currency id -->
+
+  <!-- currency rate ... -->
+  <TextView
+      android:id="@+id/text_currency_rate_label"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/padding_default"
+      android:paddingEnd="@dimen/padding_half"
+      android:paddingStart="@dimen/padding_half"
+      android:paddingTop="@dimen/padding_default"
+      android:text="@string/label_currency_rate"
+      android:textSize="@dimen/text_size_default"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toStartOf="@+id/guideline"
+      app:layout_constraintTop_toBottomOf="@+id/text_currency_id_label"
+      />
+
+  <TextView
+      android:id="@+id/text_currency_rate"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/padding_default"
+      android:paddingEnd="@dimen/padding_half"
+      android:paddingStart="@dimen/padding_half"
+      android:paddingTop="@dimen/padding_default"
+      android:textSize="@dimen/text_size_default"
+      app:layout_constraintStart_toEndOf="@+id/guideline"
+      app:layout_constraintTop_toBottomOf="@+id/text_currency_id"
+      tools:text="20.97934"
+      />
+  <!-- ... currency rate -->
+
+  <View
+      android:id="@+id/divider"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/divider_size"
+      android:background="@color/colorDivider"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="@dimen/padding_half"
+      app:layout_constraintTop_toBottomOf="@+id/text_currency_rate_label"
+      />
+
+  <TextView
+      android:id="@+id/text_exchange_date"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:padding="@dimen/padding_default"
+      android:textSize="@dimen/text_size_default"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/divider"
+      tools:text="12/12/2019"
+      />
+
+</android.support.constraint.ConstraintLayout>

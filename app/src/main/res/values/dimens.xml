@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+  <dimen name="margin_default">16dp</dimen>
+
+  <dimen name="padding_default">16dp</dimen>
+  <dimen name="padding_half">8dp</dimen>
+
+  <dimen name="text_size_default">20sp</dimen>
+
+  <dimen name="divider_size">1dp</dimen>
+
+  <!--TODO: clean unused values-->
   <dimen name="fab_margin">16dp</dimen>
   <dimen name="app_bar_height">200dp</dimen>
   <dimen name="item_width">200dp</dimen>

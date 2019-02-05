@@ -2,8 +2,8 @@ package com.example.currencies;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +12,11 @@ import com.example.currencies.dummy.DummyContent;
 
 /**
  * A fragment representing a single Item detail screen.
- * This fragment is either contained in a {@link ItemListActivity}
- * in two-pane mode (on tablets) or a {@link ItemDetailActivity}
+ * This fragment is either contained in a {@link CurrenciesActivity}
+ * in two-pane mode (on tablets) or a {@link CurrencyDetailActivity}
  * on handsets.
  */
-public class ItemDetailFragment extends Fragment {
+public class CurrencyDetailFragment extends Fragment {
   /**
    * The fragment argument representing the item ID that this fragment
    * represents.
@@ -26,13 +26,13 @@ public class ItemDetailFragment extends Fragment {
   /**
    * The dummy content this fragment is presenting.
    */
-  private DummyContent.DummyItem mItem;
+  private DummyContent.DummyItem item;
 
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the
    * fragment (e.g. upon screen orientation changes).
    */
-  public ItemDetailFragment() {
+  public CurrencyDetailFragment() {
   }
 
   @Override
@@ -43,13 +43,12 @@ public class ItemDetailFragment extends Fragment {
       // Load the dummy content specified by the fragment
       // arguments. In a real-world scenario, use a Loader
       // to load content from a content provider.
-      mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+      item = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
 
       Activity activity = this.getActivity();
-      CollapsingToolbarLayout appBarLayout =
-          (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+      Toolbar appBarLayout = (Toolbar) activity.findViewById(R.id.toolbar);
       if (appBarLayout != null) {
-        appBarLayout.setTitle(mItem.content);
+        appBarLayout.setTitle(item.content);
       }
     }
   }
@@ -57,11 +56,12 @@ public class ItemDetailFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View rootView = inflater.inflate(R.layout.item_detail, container, false);
+    View rootView = inflater.inflate(R.layout.fragment_currency_detail, container, false);
 
     // Show the dummy content as text in a TextView.
-    if (mItem != null) {
-      ((TextView) rootView.findViewById(R.id.item_detail)).setText(mItem.details);
+    if (item != null) {
+      ((TextView) rootView.findViewById(R.id.text_currency_id)).setText(item.id);
+      ((TextView) rootView.findViewById(R.id.text_currency_rate)).setText(item.details);
     }
 
     return rootView;
