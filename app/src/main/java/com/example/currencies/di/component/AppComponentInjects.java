@@ -1,6 +1,7 @@
 package com.example.currencies.di.component;
 
 import com.example.currencies.App;
+import com.example.currencies.data.db.StorIoDbManager;
 
 public interface AppComponentInjects {
 
@@ -18,4 +19,5 @@ public interface AppComponentInjects {
   // Mappers
 
   // Data managers
+  void inject(StorIoDbManager dbManager);
 }
