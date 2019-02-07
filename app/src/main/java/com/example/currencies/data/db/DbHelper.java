@@ -3,8 +3,8 @@ package com.example.currencies.data.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.example.currencies.data.db.tables.CurrenciesTable;
-import com.example.currencies.data.db.tables.RatesTable;
+import com.example.currencies.data.db.table.CurrenciesTable;
+import com.example.currencies.data.db.table.RatesTable;
 
 public class DbHelper extends SQLiteOpenHelper {
 

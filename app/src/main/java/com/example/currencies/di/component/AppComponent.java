@@ -2,7 +2,7 @@ package com.example.currencies.di.component;
 
 import com.example.currencies.App;
 import com.example.currencies.di.module.AppModule;
-import com.example.currencies.di.module.DataModule;
+import com.example.currencies.di.module.data.DataModule;
 import com.example.currencies.di.scope.AppScope;
 import dagger.Component;
 

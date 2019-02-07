@@ -1,7 +1,7 @@
 package com.example.currencies.data.db.entity;
 
 import android.support.annotation.Nullable;
-import com.example.currencies.data.db.tables.RatesTable;
+import com.example.currencies.data.db.table.RatesTable;
 import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteColumn;
 import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteType;
 

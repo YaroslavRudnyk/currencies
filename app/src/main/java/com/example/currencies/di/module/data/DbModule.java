@@ -1,4 +1,4 @@
-package com.example.currencies.di.module;
+package com.example.currencies.di.module.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
