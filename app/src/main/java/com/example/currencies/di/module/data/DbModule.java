@@ -44,7 +44,7 @@ import javax.inject.Named;
     return new CurrencyWorker();
   }
 
-  @Provides @AppScope @Named(NAME_WORKER_RATE) RateWorker provideRateWorker() {
+  @Provides @AppScope @Named(NAME_WORKER_RATE) EntityWorker provideRateWorker() {
     return new RateWorker();
   }
   // ... Workers

@@ -1,22 +1,68 @@
 package com.example.currencies.data.db;
 
 import com.example.currencies.App;
+import com.example.currencies.data.db.entity.CurrencyEntity;
+import com.example.currencies.data.db.entity.RateEntity;
 import com.example.currencies.data.db.worker.EntityWorker;
 import com.example.currencies.data.db.worker.RateWorker;
 import com.pushtorefresh.storio3.sqlite.StorIOSQLite;
+import io.reactivex.Completable;
+import io.reactivex.Single;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import static com.example.currencies.di.module.data.DbModule.NAME_WORKER_CURRENCY;
 import static com.example.currencies.di.module.data.DbModule.NAME_WORKER_RATE;
 
-public class StorIoDbManager implements DbManager {
+@SuppressWarnings("unchecked") public class StorIoDbManager implements DbManager {
 
   @Inject StorIOSQLite storIOSQLite;
   @Inject @Named(NAME_WORKER_CURRENCY) EntityWorker currencyWorker;
-  @Inject @Named(NAME_WORKER_RATE) RateWorker rateWorker;
+  @Inject @Named(NAME_WORKER_RATE) EntityWorker rateWorker;
 
   public StorIoDbManager() {
     App.getAppComponent().inject(this);
+  }
+
+  @Override public Single<List<CurrencyEntity>> getAllCurrencies() {
+    return currencyWorker.getAllEntities();
+  }
+
+  @Override public Completable putCurrency(CurrencyEntity entity) {
+    return currencyWorker.putEntity(entity);
+  }
+
+  @Override public Completable putCurrencies(List<CurrencyEntity> entities) {
+    return currencyWorker.putEntities(entities);
+  }
+
+  @Override public Completable deleteCurrency(CurrencyEntity entity) {
+    return currencyWorker.deleteEntity(entity);
+  }
+
+  @Override public Single<List<RateEntity>> getAllRates() {
+    return rateWorker.getAllEntities();
+  }
+
+  @Override public Single<List<RateEntity>> getRatesOnDate(Long date) {
+    return ((RateWorker) rateWorker).getEntitiesOnDate(date);
+  }
+
+  @Override
+  public Single<List<RateEntity>> getRatesOnCurrencyIdOnDate(Integer currencyId, Long date) {
+    return ((RateWorker) rateWorker).getEntitiesOnCurrencyIdOnDate(currencyId, date);
+  }
+
+  @Override public Completable putRate(RateEntity entity) {
+    return rateWorker.putEntity(entity);
+  }
+
+  @Override public Completable putRates(List<RateEntity> entities) {
+    return rateWorker.putEntities(entities);
+  }
+
+  @Override public Completable deleteRate(RateEntity entity) {
+    return rateWorker.deleteEntity(entity);
   }
 }

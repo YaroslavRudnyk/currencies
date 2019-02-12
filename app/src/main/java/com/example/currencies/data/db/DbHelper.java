@@ -30,6 +30,7 @@ public class DbHelper extends SQLiteOpenHelper {
   private void createDbTables(SQLiteDatabase db) {
     // Currencies
     db.execSQL(CurrenciesTable.getCreateTableQuery());
+    db.execSQL(CurrenciesTable.getCreateIndexQuery());
     // Rates
     db.execSQL(RatesTable.getCreateTableQuery());
   }

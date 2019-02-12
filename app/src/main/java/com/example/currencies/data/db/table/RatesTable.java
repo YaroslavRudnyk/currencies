@@ -30,4 +30,20 @@ public class RatesTable {
         + ");"
         ;
   }
+
+  public static Query getRatesOnDateQuery(Long date) {
+    return Query.builder()
+        .table(TABLE)
+        .where(COLUMN_EXCHANGE_DATE + " = ?")
+        .whereArgs(date)
+        .build();
+  }
+
+  public static Query getRatesOnCurrencyIdOnDateQuery(Integer currencyId, Long date) {
+    return Query.builder()
+        .table(TABLE)
+        .where(COLUMN_CURRENCY_ID + " = ? AND " + COLUMN_EXCHANGE_DATE + " = ?")
+        .whereArgs(currencyId, date)
+        .build();
+  }
 }

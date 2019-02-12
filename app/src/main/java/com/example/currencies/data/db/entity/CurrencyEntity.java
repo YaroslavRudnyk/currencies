@@ -1,11 +1,13 @@
 package com.example.currencies.data.db.entity;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.example.currencies.data.db.table.CurrenciesTable;
 import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteColumn;
 import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteType;
 
-@StorIOSQLiteType(table = CurrenciesTable.TABLE) public class CurrencyEntity implements DbEntity {
+@SuppressWarnings("unused") @StorIOSQLiteType(table = CurrenciesTable.TABLE)
+public class CurrencyEntity implements DbEntity {
 
   @StorIOSQLiteColumn(name = CurrenciesTable.COLUMN_ID, key = true) Long _id;
   @StorIOSQLiteColumn(name = CurrenciesTable.COLUMN_CURRENCY_ID) Integer currencyId;
@@ -20,7 +22,7 @@ import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteType;
   }
 
   public CurrencyEntity(Long _id, Integer currencyId, String name, String code) {
-    this._id = _id != 0 ? _id : null;
+    this._id = (_id != null && _id != 0) ? _id : null;
     this.currencyId = currencyId;
     this.name = name;
     this.code = code;
@@ -46,6 +48,14 @@ import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteType;
     result = 31 * result + (code != null ? code.hashCode() : 0);
 
     return result;
+  }
+
+  @NonNull @Override public String toString() {
+    return "CurrencyEntity: {"
+        + "_id= \'" + _id + "\'; "
+        + "currencyId= \'" + currencyId + "\'; "
+        + "name= \'" + name + "\'; "
+        + "code= \'" + code + "\'}";
   }
 
   public Long get_id() {

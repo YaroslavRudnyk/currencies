@@ -24,12 +24,14 @@ public class CurrenciesTable {
     return "CREATE TABLE IF NOT EXISTS " + TABLE
         + " ("
         + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
-        + COLUMN_CURRENCY_ID + " INTEGER NOT NULL, "
+        + COLUMN_CURRENCY_ID + " INTEGER UNIQUE ON CONFLICT ABORT, "
         + COLUMN_NAME + " TEXT NULL, "
         + COLUMN_CODE + " TEXT NULL "
-        + "); "
-        + "CREATE UNIQUE INDEX IF NOT EXISTS " + INDEX_CURRENCY_ID
-        + " ON " + TABLE + " (" + COLUMN_CURRENCY_ID + ");"
-        ;
+        + ");";
+  }
+
+  @NonNull public static String getCreateIndexQuery() {
+    return "CREATE UNIQUE INDEX IF NOT EXISTS " + INDEX_CURRENCY_ID
+        + " ON " + TABLE + " (" + COLUMN_CURRENCY_ID + ");";
   }
 }

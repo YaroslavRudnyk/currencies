@@ -11,5 +11,7 @@ public interface EntityWorker<E extends DbEntity> {
 
   Completable putEntity(DbEntity entity);
 
+  Completable putEntities(List<E> entities);
+
   Completable deleteEntity(DbEntity entity);
 }
