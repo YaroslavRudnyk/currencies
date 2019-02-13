@@ -1,14 +1,11 @@
 package com.example.currencies.data.http;
 
-import android.util.Log;
 import com.example.currencies.App;
 import com.example.currencies.data.http.api.CentralBankRestApi;
 import com.example.currencies.data.http.pojo.CurrencyPojo;
+import com.example.currencies.util.DateUtil;
 import io.reactivex.Single;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import javax.inject.Inject;
 
 public class CentralBankHttpManager implements HttpManager {
@@ -23,14 +20,7 @@ public class CentralBankHttpManager implements HttpManager {
     return api.getCurrentRates();
   }
 
-  @Override public Single<List<CurrencyPojo>> fetchCurrencies(Date date) {
-    SimpleDateFormat df =
-        new SimpleDateFormat("yyyyMMdd", new Locale("uk") /*TODO: keep locale in App*/);
-
-    String stringDate = df.format(date);
-
-    Log.d("CentralBankHttpManager", "DBG_HTTP: fetchCurrencies(): tr date " + stringDate);
-
-    return api.getRatesOnDate(stringDate);
+  @Override public Single<List<CurrencyPojo>> fetchCurrencies(long time) {
+    return api.getRatesOnDate(DateUtil.getDateRepresentation(time));
   }
 }
