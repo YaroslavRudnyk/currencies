@@ -5,6 +5,7 @@ import com.example.currencies.data.Repository;
 import com.example.currencies.data.db.StorIoDbManager;
 import com.example.currencies.data.db.worker.CurrencyWorker;
 import com.example.currencies.data.db.worker.RateWorker;
+import com.example.currencies.data.http.CentralBankHttpManager;
 
 public interface AppComponentInjects {
 
@@ -24,7 +25,9 @@ public interface AppComponentInjects {
   // Data managers
   void inject(Repository repository);
 
-  void inject(StorIoDbManager dbManager);
+  void inject(StorIoDbManager manager);
+
+  void inject(CentralBankHttpManager manager);
 
   // Database workers
 
