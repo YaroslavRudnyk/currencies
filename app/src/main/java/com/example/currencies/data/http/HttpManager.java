@@ -1,12 +1,12 @@
 package com.example.currencies.data.http;
 
-import com.example.currencies.data.http.pojo.CurrencyPojo;
+import com.example.currencies.data.http.pojo.CurrencyRatePojo;
 import io.reactivex.Single;
 import java.util.List;
 
 public interface HttpManager {
 
-  Single<List<CurrencyPojo>> fetchCurrencies();
+  Single<List<CurrencyRatePojo>> fetchCurrencyRates();
 
-  Single<List<CurrencyPojo>> fetchCurrencies(long time);
+  Single<List<CurrencyRatePojo>> fetchCurrencyRates(long time);
 }

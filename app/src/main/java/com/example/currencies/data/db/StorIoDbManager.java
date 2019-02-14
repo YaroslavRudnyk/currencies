@@ -3,12 +3,14 @@ package com.example.currencies.data.db;
 import com.example.currencies.App;
 import com.example.currencies.data.db.entity.CurrencyEntity;
 import com.example.currencies.data.db.entity.RateEntity;
+import com.example.currencies.data.db.worker.CurrencyRateWorker;
 import com.example.currencies.data.db.worker.EntityWorker;
 import com.example.currencies.data.db.worker.RateWorker;
 import com.pushtorefresh.storio3.sqlite.StorIOSQLite;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -20,6 +22,7 @@ import static com.example.currencies.di.module.data.DbModule.NAME_WORKER_RATE;
   @Inject StorIOSQLite storIOSQLite;
   @Inject @Named(NAME_WORKER_CURRENCY) EntityWorker currencyWorker;
   @Inject @Named(NAME_WORKER_RATE) EntityWorker rateWorker;
+  @Inject CurrencyRateWorker currencyRateWorker;
 
   public StorIoDbManager() {
     App.getAppComponent().inject(this);
@@ -64,5 +67,9 @@ import static com.example.currencies.di.module.data.DbModule.NAME_WORKER_RATE;
 
   @Override public Completable deleteRate(RateEntity entity) {
     return rateWorker.deleteEntity(entity);
+  }
+
+  @Override public Completable putCurrencyRates(Map<CurrencyEntity, RateEntity> entitiesMap) {
+    return currencyRateWorker.putEntities(entitiesMap);
   }
 }

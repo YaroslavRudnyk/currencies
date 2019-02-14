@@ -6,13 +6,19 @@ import com.example.currencies.data.db.DbHelper;
 import com.example.currencies.data.db.DbManager;
 import com.example.currencies.data.db.StorIoDbManager;
 import com.example.currencies.data.db.entity.CurrencyEntity;
-import com.example.currencies.data.db.entity.CurrencyEntitySQLiteTypeMapping;
 import com.example.currencies.data.db.entity.RateEntity;
-import com.example.currencies.data.db.entity.RateEntitySQLiteTypeMapping;
+import com.example.currencies.data.db.resolver.currency.CurrencyDeleteResolver;
+import com.example.currencies.data.db.resolver.currency.CurrencyGetResolver;
+import com.example.currencies.data.db.resolver.currency.CurrencyPutResolver;
+import com.example.currencies.data.db.resolver.rate.RateDeleteResolver;
+import com.example.currencies.data.db.resolver.rate.RateGetResolver;
+import com.example.currencies.data.db.resolver.rate.RatePutResolver;
+import com.example.currencies.data.db.worker.CurrencyRateWorker;
 import com.example.currencies.data.db.worker.CurrencyWorker;
 import com.example.currencies.data.db.worker.EntityWorker;
 import com.example.currencies.data.db.worker.RateWorker;
 import com.example.currencies.di.scope.AppScope;
+import com.pushtorefresh.storio3.sqlite.SQLiteTypeMapping;
 import com.pushtorefresh.storio3.sqlite.StorIOSQLite;
 import com.pushtorefresh.storio3.sqlite.impl.DefaultStorIOSQLite;
 import dagger.Module;
@@ -33,9 +39,23 @@ import javax.inject.Named;
   }
 
   @Provides @AppScope StorIOSQLite provideStorIOSQLite(SQLiteOpenHelper sqliteOpenHelper) {
-    return DefaultStorIOSQLite.builder().sqliteOpenHelper(sqliteOpenHelper)
-        .addTypeMapping(CurrencyEntity.class, new CurrencyEntitySQLiteTypeMapping())
-        .addTypeMapping(RateEntity.class, new RateEntitySQLiteTypeMapping())
+    return DefaultStorIOSQLite.builder()
+        .sqliteOpenHelper(sqliteOpenHelper)
+
+        .addTypeMapping(CurrencyEntity.class,
+            SQLiteTypeMapping.<CurrencyEntity>builder()
+                .putResolver(new CurrencyPutResolver())
+                .getResolver(new CurrencyGetResolver())
+                .deleteResolver(new CurrencyDeleteResolver())
+                .build()
+        )
+        .addTypeMapping(RateEntity.class,
+            SQLiteTypeMapping.<RateEntity>builder()
+                .putResolver(new RatePutResolver())
+                .getResolver(new RateGetResolver())
+                .deleteResolver(new RateDeleteResolver())
+                .build())
+
         .build();
   }
 
@@ -46,6 +66,10 @@ import javax.inject.Named;
 
   @Provides @AppScope @Named(NAME_WORKER_RATE) EntityWorker provideRateWorker() {
     return new RateWorker();
+  }
+
+  @Provides @AppScope CurrencyRateWorker provideCurrencyRateWorker() {
+    return new CurrencyRateWorker();
   }
   // ... Workers
 }

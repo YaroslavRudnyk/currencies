@@ -23,7 +23,7 @@ public class RatesTable {
         + " ("
         + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
         + COLUMN_CURRENCY_ID + " INTEGER NOT NULL, "
-        + COLUMN_EXCHANGE_DATE + " INTEGER NULL, "
+        + COLUMN_EXCHANGE_DATE + " INTEGER NOT NULL, "
         + COLUMN_EXCHANGE_RATE + " REAL NULL, "
         + "FOREIGN KEY (" + COLUMN_CURRENCY_ID + ")"
         + " REFERENCES " + CurrenciesTable.TABLE + "(" + CurrenciesTable.COLUMN_CURRENCY_ID + ")"

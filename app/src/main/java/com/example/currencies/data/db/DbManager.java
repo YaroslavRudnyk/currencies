@@ -5,6 +5,7 @@ import com.example.currencies.data.db.entity.RateEntity;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import java.util.List;
+import java.util.Map;
 
 public interface DbManager {
 
@@ -31,4 +32,8 @@ public interface DbManager {
 
   Completable deleteRate(RateEntity entity);
   // ... Rates
+
+  // CurrencyRates ...
+  Completable putCurrencyRates(Map<CurrencyEntity, RateEntity> currencyRates);
+  // ... CurrencyRates
 }

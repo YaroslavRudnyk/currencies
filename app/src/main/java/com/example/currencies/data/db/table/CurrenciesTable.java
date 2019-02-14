@@ -24,7 +24,7 @@ public class CurrenciesTable {
     return "CREATE TABLE IF NOT EXISTS " + TABLE
         + " ("
         + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
-        + COLUMN_CURRENCY_ID + " INTEGER UNIQUE ON CONFLICT ABORT, "
+        + COLUMN_CURRENCY_ID + " INTEGER UNIQUE, "
         + COLUMN_NAME + " TEXT NULL, "
         + COLUMN_CODE + " TEXT NULL "
         + ");";

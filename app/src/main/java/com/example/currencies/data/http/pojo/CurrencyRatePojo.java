@@ -3,7 +3,7 @@ package com.example.currencies.data.http.pojo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("unused") public class CurrencyPojo {
+@SuppressWarnings("unused") public class CurrencyRatePojo {
 
   @SerializedName("r030")
   @Expose
