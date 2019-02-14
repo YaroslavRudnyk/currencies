@@ -9,7 +9,8 @@ import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(includes = { DbModule.class, HttpModule.class }) public class DataModule {
+@Module(includes = { DbModule.class, HttpModule.class, MapperModule.class })
+public class DataModule {
 
   private static final String STRING_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
