@@ -15,6 +15,11 @@ public class DbHelper extends SQLiteOpenHelper {
     super(context, DB_NAME, null, DB_VERSION);
   }
 
+  @Override public void onConfigure(SQLiteDatabase db) {
+    super.onConfigure(db);
+    db.setForeignKeyConstraintsEnabled(true);
+  }
+
   @Override public void onCreate(SQLiteDatabase db) {
     createDbTables(db);
   }

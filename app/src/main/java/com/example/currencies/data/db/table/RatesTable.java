@@ -26,7 +26,11 @@ public class RatesTable {
         + COLUMN_EXCHANGE_DATE + " INTEGER NOT NULL, "
         + COLUMN_EXCHANGE_RATE + " REAL NULL, "
         + "FOREIGN KEY (" + COLUMN_CURRENCY_ID + ")"
-        + " REFERENCES " + CurrenciesTable.TABLE + "(" + CurrenciesTable.COLUMN_CURRENCY_ID + ")"
+        + " REFERENCES "
+        + CurrenciesTable.TABLE
+        + " ("
+        + CurrenciesTable.COLUMN_CURRENCY_ID
+        + ") ON DELETE CASCADE"
         + ");"
         ;
   }
