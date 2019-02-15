@@ -9,7 +9,9 @@ import com.pushtorefresh.storio3.sqlite.StorIOSQLite;
 import com.pushtorefresh.storio3.sqlite.operations.delete.DeleteResult;
 import com.pushtorefresh.storio3.sqlite.operations.put.PutResult;
 import com.pushtorefresh.storio3.sqlite.operations.put.PutResults;
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import java.util.Iterator;
 import java.util.List;
@@ -70,6 +72,14 @@ public class CurrencyWorker implements EntityWorker {
         .asRxSingle()
         .doOnEvent((result, t) -> handleEntityDeleteEvent(entity, result, t))
         .ignoreElement();
+  }
+
+  @Override public Flowable<List<CurrencyEntity>> listenForUpdates() {
+    return storIOSQLite.get()
+        .listOfObjects(CurrencyEntity.class)
+        .withQuery(CurrenciesTable.QUERY_ALL)
+        .prepare()
+        .asRxFlowable(BackpressureStrategy.LATEST);
   }
 
   ///////////////////////////////////////////////////////////////////////////

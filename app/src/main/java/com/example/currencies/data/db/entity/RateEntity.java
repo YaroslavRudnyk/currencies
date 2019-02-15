@@ -91,4 +91,18 @@ import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteType;
   public void setExchangeRate(Float exchangeRate) {
     this.exchangeRate = exchangeRate;
   }
+
+  @Override public boolean differs(DbEntity entity) {
+    if (!(entity instanceof RateEntity)) return true;
+    RateEntity that = (RateEntity) entity;
+    if (!this.equals(that)) return true;
+
+    if (_id != null ? !_id.equals(that._id) : that._id != null) return true;
+    if (currencyId != null ? !currencyId.equals(that.currencyId) : that.currencyId != null)
+      return true;
+    if (exchangeDate != null ? !exchangeDate.equals(that.exchangeDate) : that.exchangeDate != null)
+      return true;
+    return exchangeRate != null ? !exchangeRate.equals(that.exchangeRate)
+        : that.exchangeRate != null;
+  }
 }

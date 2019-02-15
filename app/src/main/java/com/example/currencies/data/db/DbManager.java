@@ -3,6 +3,7 @@ package com.example.currencies.data.db;
 import com.example.currencies.data.db.entity.CurrencyEntity;
 import com.example.currencies.data.db.entity.RateEntity;
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,8 @@ public interface DbManager {
   Completable putCurrencies(List<CurrencyEntity> entities);
 
   Completable deleteCurrency(CurrencyEntity entity);
+
+  Flowable<List<CurrencyEntity>> listenForCurrenciesUpdates();
   // ... Currencies
 
   // Rates ...

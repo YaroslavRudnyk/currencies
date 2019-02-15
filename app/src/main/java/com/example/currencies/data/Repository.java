@@ -35,6 +35,10 @@ public class Repository implements DataRepository {
     return cacheCurrencyRatesInDb(httpManager.fetchCurrencyRates(time));
   }
 
+  @Override public Flowable<List<CurrencyEntity>> listenForCurrenciesUpdates() {
+    return dbManager.listenForCurrenciesUpdates();
+  }
+
   ///////////////////////////////////////////////////////////////////////////
   // PRIVATE SECTION
   ///////////////////////////////////////////////////////////////////////////

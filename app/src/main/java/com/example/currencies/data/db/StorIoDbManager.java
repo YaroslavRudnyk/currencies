@@ -8,6 +8,7 @@ import com.example.currencies.data.db.worker.EntityWorker;
 import com.example.currencies.data.db.worker.RateWorker;
 import com.pushtorefresh.storio3.sqlite.StorIOSQLite;
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,10 @@ import static com.example.currencies.di.module.data.DbModule.NAME_WORKER_RATE;
 
   @Override public Completable deleteCurrency(CurrencyEntity entity) {
     return currencyWorker.deleteEntity(entity);
+  }
+
+  @Override public Flowable<List<CurrencyEntity>> listenForCurrenciesUpdates() {
+    return currencyWorker.listenForUpdates();
   }
 
   @Override public Single<List<RateEntity>> getAllRates() {

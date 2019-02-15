@@ -35,17 +35,12 @@ public class CurrencyEntity implements DbEntity {
     CurrencyEntity that = (CurrencyEntity) obj;
 
     if (_id != null ? !_id.equals(that._id) : that._id != null) return false;
-    if (currencyId != null ? !currencyId.equals(that.currencyId) : that.currencyId != null)
-      return false;
-    if (name != null ? !name.equals(that.name) : that.name != null) return false;
-    return code != null ? code.equals(that.code) : that.code == null;
+    return currencyId != null ? currencyId.equals(that.currencyId) : that.currencyId == null;
   }
 
   @Override public int hashCode() {
     int result = _id != null ? _id.hashCode() : 0;
     result = 31 * result + (currencyId != null ? currencyId.hashCode() : 0);
-    result = 31 * result + (name != null ? name.hashCode() : 0);
-    result = 31 * result + (code != null ? code.hashCode() : 0);
 
     return result;
   }
@@ -88,5 +83,17 @@ public class CurrencyEntity implements DbEntity {
 
   public void setCode(String code) {
     this.code = code;
+  }
+
+  @Override public boolean differs(DbEntity entity) {
+    if (!(entity instanceof CurrencyEntity)) return true;
+    CurrencyEntity that = (CurrencyEntity) entity;
+    if (!this.equals(that)) return true;
+
+    if (_id != null ? !_id.equals(that._id) : that._id != null) return true;
+    if (currencyId != null ? !currencyId.equals(that.currencyId) : that.currencyId != null)
+      return true;
+    if (name != null ? !name.equals(that.name) : that.name != null) return true;
+    return code != null ? !code.equals(that.code) : that.code != null;
   }
 }
