@@ -1,6 +1,7 @@
 package com.example.currencies.data.db.table;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import com.pushtorefresh.storio3.sqlite.queries.Query;
 
 public class RatesTable {
@@ -49,5 +50,18 @@ public class RatesTable {
         .where(COLUMN_CURRENCY_ID + " = ? AND " + COLUMN_EXCHANGE_DATE + " = ?")
         .whereArgs(currencyId, date)
         .build();
+  }
+
+  public static Query getRateOnCurrencyIdOnDateQuery(int currencyId, long date) {
+    Query query = Query.builder()
+        .table(TABLE)
+        .where(COLUMN_CURRENCY_ID + " = ? AND " + COLUMN_EXCHANGE_DATE + " = ?")
+        .whereArgs(currencyId, date)
+        .limit(1)
+        .build();
+
+    Log.i("RatesTable", "DBG_DB: getRateOnCurrencyIdOnDateQuery: \n" + query.toString());
+
+    return query;
   }
 }

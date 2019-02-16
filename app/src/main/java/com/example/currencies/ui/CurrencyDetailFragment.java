@@ -2,14 +2,19 @@ package com.example.currencies.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.OnClick;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.currencies.R;
-import com.example.currencies.dummy.DummyContent;
+import com.example.currencies.data.db.entity.RateEntity;
+import com.example.currencies.ui.base.BaseFragment;
+import com.example.currencies.util.DateUtil;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -17,54 +22,93 @@ import com.example.currencies.dummy.DummyContent;
  * in two-pane mode (on tablets) or a {@link CurrencyDetailActivity}
  * on handsets.
  */
-public class CurrencyDetailFragment extends Fragment {
+public class CurrencyDetailFragment extends BaseFragment implements CurrencyDetailFragmentView {
   /**
-   * The fragment argument representing the item ID that this fragment
+   * The fragment argument representing the Currency ID that this fragment
    * represents.
    */
-  public static final String ARG_ITEM_ID = "item_id";
+  public static final String ARG_CURRENCY_ID = "currency_id";
+  public static final String ARG_CURRENCY_NAME = "currency_name";
 
-  /**
-   * The dummy content this fragment is presenting.
-   */
-  private DummyContent.DummyItem item;
+  @InjectPresenter CurrencyDetailFragmentPresenter presenter;
+
+  @BindView(R.id.text_currency_id) TextView currencyIdText;
+  @BindView(R.id.text_currency_rate) TextView currencyRateText;
+  @BindView(R.id.text_exchange_date) TextView exchangeDateText;
+
+  private int currencyId = -1;
+  private String currencyName;
 
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the
    * fragment (e.g. upon screen orientation changes).
    */
   public CurrencyDetailFragment() {
+    super(R.layout.fragment_currency_detail);
   }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    if (getArguments().containsKey(ARG_ITEM_ID)) {
-      // Load the dummy content specified by the fragment
-      // arguments. In a real-world scenario, use a Loader
-      // to load content from a content provider.
-      item = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
-
-      Activity activity = this.getActivity();
-      Toolbar appBarLayout = (Toolbar) activity.findViewById(R.id.toolbar);
-      if (appBarLayout != null) {
-        appBarLayout.setTitle(item.content);
-      }
-    }
+    readArguments();
+    updateToolbar();
   }
 
-  @Override
+  /*@Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_currency_detail, container, false);
 
     // Show the dummy content as text in a TextView.
-    if (item != null) {
-      ((TextView) rootView.findViewById(R.id.text_currency_id)).setText(item.id);
-      ((TextView) rootView.findViewById(R.id.text_currency_rate)).setText(item.details);
+    if (currency != null) {
+      ((TextView) rootView.findViewById(R.id.text_currency_id)).setText(rate.getCurrencyId());
+      ((TextView) rootView.findViewById(R.id.text_currency_rate)).setText("" + rate.getExchangeRate());
     }
 
     return rootView;
+  }*/
+
+  @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    presenter.onCurrencyIdChange(currencyId);
+  }
+
+  // MVP ...
+  @Override public void updateRate(RateEntity rateEntity) {
+    currencyIdText.setText(String.valueOf(rateEntity.getCurrencyId()));
+    currencyRateText.setText(String.valueOf(rateEntity.getExchangeRate()));
+    exchangeDateText.setText(
+        DateUtil.getDateRepresentation(DateUtil.DATE_FORMAT_PATTERN_FROM_STRING,
+            rateEntity.getExchangeDate()));
+  }
+  // ... MVP
+
+  // Butterknife ...
+  @OnClick(R.id.text_exchange_date) void onDateClick() {
+    presenter.onDateClick();
+  }
+  // ... Butterknife
+
+  ///////////////////////////////////////////////////////////////////////////
+  // PRIVATE SECTION
+  ///////////////////////////////////////////////////////////////////////////
+
+  private void readArguments() {
+    if (getArguments() == null) return;
+
+    if (getArguments().containsKey(ARG_CURRENCY_ID)) {
+      currencyId = getArguments().getInt(ARG_CURRENCY_ID, -1);
+    }
+    if (getArguments().containsKey(ARG_CURRENCY_NAME)) {
+      currencyName = getArguments().getString(ARG_CURRENCY_NAME);
+    }
+  }
+
+  private void updateToolbar() {
+    Activity activity = this.getActivity();
+    Toolbar appBarLayout = (Toolbar) activity.findViewById(R.id.toolbar);
+    if (appBarLayout == null || TextUtils.isEmpty(currencyName)) return;
+    appBarLayout.setTitle(currencyName);
   }
 }

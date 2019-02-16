@@ -62,6 +62,10 @@ import static com.example.currencies.di.module.data.DbModule.NAME_WORKER_RATE;
     return ((RateWorker) rateWorker).getEntitiesOnCurrencyIdOnDate(currencyId, date);
   }
 
+  @Override public Single<RateEntity> getCurrencyRate(int currencyId, long rateTime) {
+    return ((RateWorker) rateWorker).getEntityOnCurrencyIdOnDate(currencyId, rateTime);
+  }
+
   @Override public Completable putRate(RateEntity entity) {
     return rateWorker.putEntity(entity);
   }
@@ -72,6 +76,15 @@ import static com.example.currencies.di.module.data.DbModule.NAME_WORKER_RATE;
 
   @Override public Completable deleteRate(RateEntity entity) {
     return rateWorker.deleteEntity(entity);
+  }
+
+  @Override public Flowable<List<RateEntity>> listenForCurrencyRateUpdates() {
+    return rateWorker.listenForUpdates();
+  }
+
+  @Override
+  public Flowable<RateEntity> listenForCurrencyRateUpdates(int currencyId, long rateDate) {
+    return ((RateWorker) rateWorker).listenForUpdates(currencyId, rateDate);
   }
 
   @Override public Completable putCurrencyRates(Map<CurrencyEntity, RateEntity> entitiesMap) {

@@ -9,6 +9,8 @@ import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteType;
 @SuppressWarnings("unused") @StorIOSQLiteType(table = RatesTable.TABLE) public class RateEntity
     implements DbEntity {
 
+  public static final RateEntity EMPTY = new RateEntity(-1, -1L, -1f);
+
   @StorIOSQLiteColumn(name = RatesTable.COLUMN_ID, key = true) Long _id;
   @StorIOSQLiteColumn(name = RatesTable.COLUMN_CURRENCY_ID) Integer currencyId;
   @StorIOSQLiteColumn(name = RatesTable.COLUMN_EXCHANGE_DATE) Long exchangeDate;

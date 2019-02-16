@@ -24,32 +24,14 @@ import javax.inject.Inject;
     super.onFirstViewAttach();
 
     addDisposable(subscribeToCurrenciesChanges());
-    addDisposable(fetchCurrencyRates());
   }
 
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }
 
-  void onCurrencyClick(CurrencyEntity entity, boolean isTwoPane) {
-    // TODO
-
-    /*if (isTwoPane) {
-      Bundle arguments = new Bundle();
-      arguments.putString(CurrencyDetailFragment.ARG_ITEM_ID, item.id);
-      CurrencyDetailFragment fragment = new CurrencyDetailFragment();
-      fragment.setArguments(arguments);
-      mParentActivity.getSupportFragmentManager().beginTransaction()
-          .replace(R.id.container_currency_detail, fragment)
-          .commit();
-    }
-    else {
-      Context context = view.getContext();
-      Intent intent = new Intent(context, CurrencyDetailActivity.class);
-      intent.putExtra(CurrencyDetailFragment.ARG_ITEM_ID, item.id);
-
-      context.startActivity(intent);
-    }*/
+  void onCurrencyClick(CurrencyEntity entity) {
+    getViewState().showCurrencyDetails(entity);
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -66,6 +48,10 @@ import javax.inject.Inject;
   }
 
   private void handleCurrenciesChanges(List<CurrencyEntity> currencyEntities) {
+    if (currencyEntities.size() == 0) {
+      addDisposable(fetchCurrencyRates());
+      return;
+    }
     getViewState().addCurrencies(currencyEntities);
   }
 

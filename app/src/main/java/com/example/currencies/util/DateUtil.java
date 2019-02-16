@@ -18,7 +18,9 @@ import java.util.GregorianCalendar;
 
   public static long parseDateString(String date) {
     try {
-      return getDateFormat(DATE_FORMAT_PATTERN_FROM_STRING).parse(date).getTime();
+      long time = getDateFormat(DATE_FORMAT_PATTERN_FROM_STRING).parse(date).getTime();
+      Log.d(TAG, "parseDateString got time: " + time + " from string " + date);
+      return time;
     } catch (ParseException e) {
       Log.e(TAG, "parseDateString got exception: " + e.toString());
       e.printStackTrace();
@@ -35,7 +37,11 @@ import java.util.GregorianCalendar;
   }
 
   public static String getDateRepresentation(long time) {
-    return getDateFormat(DATE_FORMAT_PATTERN_TO_STRING).format(getCalendar(time).getTime());
+    return getDateRepresentation(DATE_FORMAT_PATTERN_TO_STRING, time);
+  }
+
+  public static String getDateRepresentation(String format, long time) {
+    return getDateFormat(format).format(getCalendar(time).getTime());
   }
 
   /**
@@ -60,5 +66,15 @@ import java.util.GregorianCalendar;
 
   @SuppressLint("SimpleDateFormat") public static DateFormat getDateFormat(String pattern) {
     return new SimpleDateFormat(pattern);
+  }
+
+  public static long getCurrentDate() {
+    Calendar calendar = getCalendar(System.currentTimeMillis());
+    calendar.set(Calendar.HOUR_OF_DAY, 0);
+    calendar.set(Calendar.MINUTE, 0);
+    calendar.set(Calendar.SECOND, 0);
+    calendar.set(Calendar.MILLISECOND, 0);
+
+    return calendar.getTimeInMillis();
   }
 }

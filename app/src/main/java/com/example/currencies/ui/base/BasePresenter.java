@@ -17,6 +17,12 @@ public abstract class BasePresenter<V extends MvpView> extends MvpPresenter<V> {
     compositeDisposable.add(d);
   }
 
+  protected void disposeAndRemoveDisposable(Disposable d) {
+    if (d == null) return;
+    if (!d.isDisposed()) d.dispose();
+    compositeDisposable.delete(d);
+  }
+
   @Override public void onDestroy() {
     compositeDisposable.dispose();
     super.onDestroy();

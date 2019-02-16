@@ -8,6 +8,7 @@ import com.example.currencies.data.http.HttpManager;
 import com.example.currencies.data.http.pojo.CurrencyRatePojo;
 import com.example.currencies.data.mapper.CurrencyHttpToDbMapper;
 import com.example.currencies.data.mapper.RateHttpToDbMapper;
+import com.example.currencies.util.DateUtil;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -28,7 +29,7 @@ public class Repository implements DataRepository {
   }
 
   @Override public Completable fetchCurrencyRates() {
-    return cacheCurrencyRatesInDb(httpManager.fetchCurrencyRates());
+    return cacheCurrencyRatesInDb(httpManager.fetchCurrencyRates(DateUtil.getCurrentDate()));
   }
 
   @Override public Completable fetchCurrencyRates(long time) {
@@ -37,6 +38,15 @@ public class Repository implements DataRepository {
 
   @Override public Flowable<List<CurrencyEntity>> listenForCurrenciesUpdates() {
     return dbManager.listenForCurrenciesUpdates();
+  }
+
+  @Override public Flowable<RateEntity> listenForCurrencyRateUpdates(int currencyId,
+      long rateDate) {
+    return dbManager.listenForCurrencyRateUpdates(currencyId, rateDate);
+  }
+
+  @Override public Single<RateEntity> getCurrencyRate(int currencyId, long rateTime) {
+    return dbManager.getCurrencyRate(currencyId, rateTime);
   }
 
   ///////////////////////////////////////////////////////////////////////////

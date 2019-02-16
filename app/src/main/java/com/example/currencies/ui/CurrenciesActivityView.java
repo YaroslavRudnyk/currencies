@@ -10,4 +10,6 @@ import java.util.List;
     extends MvpView {
 
   void addCurrencies(List<CurrencyEntity> currencyEntities);
+
+  void showCurrencyDetails(CurrencyEntity currency);
 }

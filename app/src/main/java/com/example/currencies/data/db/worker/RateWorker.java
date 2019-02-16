@@ -5,6 +5,7 @@ import com.example.currencies.App;
 import com.example.currencies.data.db.entity.DbEntity;
 import com.example.currencies.data.db.entity.RateEntity;
 import com.example.currencies.data.db.table.RatesTable;
+import com.pushtorefresh.storio3.Optional;
 import com.pushtorefresh.storio3.sqlite.StorIOSQLite;
 import com.pushtorefresh.storio3.sqlite.operations.delete.DeleteResult;
 import com.pushtorefresh.storio3.sqlite.operations.put.PutResult;
@@ -82,6 +83,15 @@ public class RateWorker implements EntityWorker {
         .asRxFlowable(BackpressureStrategy.LATEST);
   }
 
+  public Flowable<RateEntity> listenForUpdates(int currencyId, long rateDate) {
+    return storIOSQLite.get()
+        .object(RateEntity.class)
+        .withQuery(RatesTable.getRateOnCurrencyIdOnDateQuery(currencyId, rateDate))
+        .prepare()
+        .asRxFlowable(BackpressureStrategy.LATEST)
+        .map(this::mapOptional);
+  }
+
   public Single<List<RateEntity>> getEntitiesOnDate(Long date) {
     return storIOSQLite.get()
         .listOfObjects(RateEntity.class)
@@ -98,9 +108,23 @@ public class RateWorker implements EntityWorker {
         .asRxSingle();
   }
 
+  public Single<RateEntity> getEntityOnCurrencyIdOnDate(int currencyId, long date) {
+    return storIOSQLite.get()
+        .object(RateEntity.class)
+        .withQuery(RatesTable.getRateOnCurrencyIdOnDateQuery(currencyId, date))
+        .prepare()
+        .asRxSingle()
+        .map(this::mapOptional);
+  }
+
   ///////////////////////////////////////////////////////////////////////////
   // PRIVATE SECTION
   ///////////////////////////////////////////////////////////////////////////
+
+  private RateEntity mapOptional(Optional<RateEntity> optional) {
+    if (optional == null || optional.orNull() == null) return RateEntity.EMPTY;
+    else return optional.get();
+  }
 
   private void handleEntityPutEvent(DbEntity entity, PutResult result, Throwable t) {
     if (t != null) {

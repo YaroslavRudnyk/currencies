@@ -1,5 +1,7 @@
 package com.example.currencies.ui;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +39,27 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesActivi
     Log.d(TAG, "DBG_UI: addCurrencies(" + currencyEntities.size() + ")");
     currenciesAdapter.addItems(currencyEntities);
   }
+
+  @Override public void showCurrencyDetails(CurrencyEntity currency) {
+    if (isTwoPane) {
+      Bundle arguments = new Bundle();
+      arguments.putInt(CurrencyDetailFragment.ARG_CURRENCY_ID, currency.getCurrencyId());
+      arguments.putString(CurrencyDetailFragment.ARG_CURRENCY_NAME, currency.getName());
+
+      CurrencyDetailFragment fragment = new CurrencyDetailFragment();
+      fragment.setArguments(arguments);
+      getSupportFragmentManager().beginTransaction()
+          .replace(R.id.container_currency_detail, fragment)
+          .commit();
+    }
+    else {
+      Intent intent = new Intent(this, CurrencyDetailActivity.class);
+      intent.putExtra(CurrencyDetailFragment.ARG_CURRENCY_ID, currency.getCurrencyId());
+      intent.putExtra(CurrencyDetailFragment.ARG_CURRENCY_NAME, currency.getName());
+
+      startActivity(intent);
+    }
+  }
   // ... MVP
 
   ///////////////////////////////////////////////////////////////////////////
@@ -67,7 +90,7 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesActivi
   }
 
   private void setupAdapter() {
-    currenciesAdapter.setItemListener(entity -> presenter.onCurrencyClick(entity, isTwoPane));
+    currenciesAdapter.setItemListener(entity -> presenter.onCurrencyClick(entity));
   }
 
   private void setupRecyclerView() {

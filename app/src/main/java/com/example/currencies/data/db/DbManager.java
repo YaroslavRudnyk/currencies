@@ -29,11 +29,17 @@ public interface DbManager {
 
   Single<List<RateEntity>> getRatesOnCurrencyIdOnDate(Integer currencyId, Long date);
 
+  Single<RateEntity> getCurrencyRate(int currencyId, long rateTime);
+
   Completable putRate(RateEntity entity);
 
   Completable putRates(List<RateEntity> entities);
 
   Completable deleteRate(RateEntity entity);
+
+  Flowable<List<RateEntity>> listenForCurrencyRateUpdates();
+
+  Flowable<RateEntity> listenForCurrencyRateUpdates(int currencyId, long rateDate);
   // ... Rates
 
   // CurrencyRates ...

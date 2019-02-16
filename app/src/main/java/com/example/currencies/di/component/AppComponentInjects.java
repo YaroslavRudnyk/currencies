@@ -8,6 +8,8 @@ import com.example.currencies.data.db.worker.CurrencyWorker;
 import com.example.currencies.data.db.worker.RateWorker;
 import com.example.currencies.data.http.CentralBankHttpManager;
 import com.example.currencies.ui.CurrenciesActivityPresenter;
+import com.example.currencies.ui.CurrencyDetailActivityPresenter;
+import com.example.currencies.ui.CurrencyDetailFragmentPresenter;
 import com.example.currencies.ui.adapter.CurrenciesAdapter;
 import com.example.currencies.ui.base.BaseActivity;
 
@@ -25,6 +27,10 @@ public interface AppComponentInjects {
   // Presenters
 
   void inject(CurrenciesActivityPresenter presenter);
+
+  void inject(CurrencyDetailFragmentPresenter presenter);
+
+  void inject(CurrencyDetailActivityPresenter presenter);
 
   // Adapters
 

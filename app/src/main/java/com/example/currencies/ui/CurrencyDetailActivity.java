@@ -3,23 +3,70 @@ package com.example.currencies.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
+import butterknife.ButterKnife;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.currencies.R;
+import com.example.currencies.ui.base.BaseActivity;
 
 /**
  * An activity representing a single Item detail screen. This
- * activity is only used on narrow width devices. On tablet-size devices,
+ * activity is only used on portrait screen. On landscape screen,
  * item details are presented side-by-side with a list of items
  * in a {@link CurrenciesActivity}.
  */
-public class CurrencyDetailActivity extends AppCompatActivity {
+public class CurrencyDetailActivity extends BaseActivity implements CurrencyDetailActivityView {
+
+  @InjectPresenter CurrencyDetailActivityPresenter presenter;
+
+  private int currencyId;
+  private String currencyName;
+
+  @Override protected void attachContentViewLayoutId() {
+    setContentView(R.layout.activity_currency_detail);
+    butterknifeUnbinder = ButterKnife.bind(this);
+
+    readExtras();
+    setupToolbar();
+    presenter.onReady();
+  }
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_currency_detail);
+  public boolean onOptionsItemSelected(MenuItem item) {
+    int id = item.getItemId();
+    if (id == android.R.id.home) {
+      presenter.onHome();
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
+  // MVP ...
+  @Override public void navigateToCurrenciesActivity() {
+    navigateUpTo(new Intent(this, CurrenciesActivity.class));
+  }
+
+  @Override public void showDetailsFragment() {
+    Bundle arguments = new Bundle();
+    arguments.putInt(CurrencyDetailFragment.ARG_CURRENCY_ID, currencyId);
+    arguments.putString(CurrencyDetailFragment.ARG_CURRENCY_NAME, currencyName);
+
+    CurrencyDetailFragment fragment = new CurrencyDetailFragment();
+    fragment.setArguments(arguments);
+
+    getSupportFragmentManager().beginTransaction()
+        .add(R.id.container_currency_detail, fragment)
+        .commit();
+  }
+  // ... MVP
+
+  ///////////////////////////////////////////////////////////////////////////
+  // PRIVATE SECTION
+  ///////////////////////////////////////////////////////////////////////////
+
+  private void setupToolbar() {
     Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
     setSupportActionBar(toolbar);
 
@@ -29,43 +76,12 @@ public class CurrencyDetailActivity extends AppCompatActivity {
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    // savedInstanceState is non-null when there is fragment state
-    // saved from previous configurations of this activity
-    // (e.g. when rotating the screen from portrait to landscape).
-    // In this case, the fragment will automatically be re-added
-    // to its container so we don't need to manually add it.
-    // For more information, see the Fragments API guide at:
-    //
-    // http://developer.android.com/guide/components/fragments.html
-    //
-    if (savedInstanceState == null) {
-      // Create the detail fragment and add it to the activity
-      // using a fragment transaction.
-      Bundle arguments = new Bundle();
-      arguments.putString(CurrencyDetailFragment.ARG_ITEM_ID,
-          getIntent().getStringExtra(CurrencyDetailFragment.ARG_ITEM_ID));
-      CurrencyDetailFragment fragment = new CurrencyDetailFragment();
-      fragment.setArguments(arguments);
-
-      getSupportFragmentManager().beginTransaction()
-          .add(R.id.container_currency_detail, fragment)
-          .commit();
-    }
+    if (actionBar == null || TextUtils.isEmpty(currencyName)) return;
+    actionBar.setTitle(currencyName);
   }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    int id = item.getItemId();
-    if (id == android.R.id.home) {
-      // This ID represents the Home or Up button. In the case of this
-      // activity, the Up button is shown. For
-      // more details, see the Navigation pattern on Android Design:
-      //
-      // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-      //
-      navigateUpTo(new Intent(this, CurrenciesActivity.class));
-      return true;
-    }
-    return super.onOptionsItemSelected(item);
+  private void readExtras() {
+    currencyId = getIntent().getIntExtra(CurrencyDetailFragment.ARG_CURRENCY_ID, -1);
+    currencyName = getIntent().getStringExtra(CurrencyDetailFragment.ARG_CURRENCY_NAME);
   }
 }
