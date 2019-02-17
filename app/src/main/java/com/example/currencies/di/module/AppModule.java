@@ -7,7 +7,7 @@ import com.example.currencies.di.scope.AppScope;
 import dagger.Module;
 import dagger.Provides;
 
-@Module public class AppModule {
+@Module(includes = { JobModule.class }) public class AppModule {
   private final App application;
 
   public AppModule(App application) {

@@ -18,9 +18,7 @@ import java.util.GregorianCalendar;
 
   public static long parseDateString(String date) {
     try {
-      long time = getDateFormat(DATE_FORMAT_PATTERN_FROM_STRING).parse(date).getTime();
-      Log.d(TAG, "parseDateString got time: " + time + " from string " + date);
-      return time;
+      return getDateFormat(DATE_FORMAT_PATTERN_FROM_STRING).parse(date).getTime();
     } catch (ParseException e) {
       Log.e(TAG, "parseDateString got exception: " + e.toString());
       e.printStackTrace();
