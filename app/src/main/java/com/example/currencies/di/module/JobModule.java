@@ -19,8 +19,7 @@ import java.util.concurrent.TimeUnit;
 
   @Provides @AppScope PeriodicWorkRequest provideFetchCurrenciesWorkRequest(
       Constraints constraints) {
-    return new PeriodicWorkRequest.Builder(FetchCurrenciesWorker.class, 30, /*todo change to hours*/
-        TimeUnit.SECONDS)
+    return new PeriodicWorkRequest.Builder(FetchCurrenciesWorker.class, 1, TimeUnit.HOURS)
         .addTag(FetchCurrenciesWorker.TAG)
         .setConstraints(constraints)
         .build();

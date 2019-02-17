@@ -25,9 +25,8 @@ public class FetchCurrenciesWorker extends RxWorker {
   @Override public Single<Result> createWork() {
     return repository.fetchCurrencyRates()
         .doOnError(this::logException)
-        .doOnComplete(() -> Log.i(TAG, "DBG_JOB: handle FetchCurrenciesWorker success"))
         .toSingleDefault(Result.success())
-        .onErrorReturnItem(Result.failure());
+        .onErrorReturnItem(Result.retry());
   }
 
   private void logException(Throwable t) {
