@@ -53,11 +53,12 @@ public class CurrencyDetailActivity extends BaseActivity implements CurrencyDeta
     arguments.putInt(CurrencyDetailFragment.ARG_CURRENCY_ID, currencyId);
     arguments.putString(CurrencyDetailFragment.ARG_CURRENCY_NAME, currencyName);
 
-    CurrencyDetailFragment fragment = new CurrencyDetailFragment();
+    CurrencyDetailFragment fragment = getFragment(CurrencyDetailFragment.class);
+    if (fragment == null) fragment = new CurrencyDetailFragment();
     fragment.setArguments(arguments);
 
     getSupportFragmentManager().beginTransaction()
-        .add(R.id.container_currency_detail, fragment)
+        .replace(R.id.container_currency_detail, fragment, CurrencyDetailFragment.TAG)
         .commit();
   }
   // ... MVP

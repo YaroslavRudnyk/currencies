@@ -25,6 +25,8 @@ import java.util.Calendar;
  * on handsets.
  */
 public class CurrencyDetailFragment extends BaseFragment implements CurrencyDetailFragmentView {
+
+  public static final String TAG = CurrencyDetailFragment.class.getSimpleName();
   /**
    * The fragment argument representing the Currency ID that this fragment
    * represents.

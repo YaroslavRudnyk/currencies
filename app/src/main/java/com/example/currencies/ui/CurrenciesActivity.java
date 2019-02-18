@@ -46,10 +46,11 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesActivi
       arguments.putInt(CurrencyDetailFragment.ARG_CURRENCY_ID, currency.getCurrencyId());
       arguments.putString(CurrencyDetailFragment.ARG_CURRENCY_NAME, currency.getName());
 
-      CurrencyDetailFragment fragment = new CurrencyDetailFragment();
+      CurrencyDetailFragment fragment = getFragment(CurrencyDetailFragment.class);
+      if (fragment == null) fragment = new CurrencyDetailFragment();
       fragment.setArguments(arguments);
       getSupportFragmentManager().beginTransaction()
-          .replace(R.id.container_currency_detail, fragment)
+          .replace(R.id.container_currency_detail, fragment, CurrencyDetailFragment.TAG)
           .commit();
     }
     else {
