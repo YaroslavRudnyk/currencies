@@ -8,4 +8,6 @@ import com.example.currencies.data.db.entity.RateEntity;
 @StateStrategyType(AddToEndSingleStrategy.class) public interface CurrencyDetailFragmentView
     extends MvpView {
   void updateRate(RateEntity rateEntity);
+
+  void showHideDatePicker(boolean isShow);
 }

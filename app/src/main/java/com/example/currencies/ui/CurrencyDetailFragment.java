@@ -1,6 +1,7 @@
 package com.example.currencies.ui;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import com.example.currencies.R;
 import com.example.currencies.data.db.entity.RateEntity;
 import com.example.currencies.ui.base.BaseFragment;
 import com.example.currencies.util.DateUtil;
+import java.util.Calendar;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -39,6 +41,9 @@ public class CurrencyDetailFragment extends BaseFragment implements CurrencyDeta
   private int currencyId = -1;
   private String currencyName;
 
+  private DatePickerDialog datePickerDialog;
+  private DatePickerDialog.OnDateSetListener onDateSetListener;
+
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the
    * fragment (e.g. upon screen orientation changes).
@@ -55,20 +60,6 @@ public class CurrencyDetailFragment extends BaseFragment implements CurrencyDeta
     updateToolbar();
   }
 
-  /*@Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
-    View rootView = inflater.inflate(R.layout.fragment_currency_detail, container, false);
-
-    // Show the dummy content as text in a TextView.
-    if (currency != null) {
-      ((TextView) rootView.findViewById(R.id.text_currency_id)).setText(rate.getCurrencyId());
-      ((TextView) rootView.findViewById(R.id.text_currency_rate)).setText("" + rate.getExchangeRate());
-    }
-
-    return rootView;
-  }*/
-
   @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     presenter.onCurrencyIdChange(currencyId);
@@ -81,6 +72,40 @@ public class CurrencyDetailFragment extends BaseFragment implements CurrencyDeta
     exchangeDateText.setText(
         DateUtil.getDateRepresentation(DateUtil.DATE_FORMAT_PATTERN_FROM_STRING,
             rateEntity.getExchangeDate()));
+  }
+
+  @Override public void showHideDatePicker(boolean isShow) {
+    if (isShow) showDatePickerDialog();
+    else hideDatePickerDialog();
+  }
+
+  private void showDatePickerDialog() {
+    if (datePickerDialog == null) createDatePickerDialog();
+    datePickerDialog.show();
+  }
+
+  private void createDatePickerDialog() {
+    Calendar calendar = DateUtil.getCalendar(System.currentTimeMillis());
+    initOnDateSetListener();
+    datePickerDialog =
+        new DatePickerDialog(getContext(), onDateSetListener, calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+  }
+
+  private void hideDatePickerDialog() {
+    if (datePickerDialog == null) return;
+    clearOnDateSetListener();
+    datePickerDialog.dismiss();
+  }
+
+  private void initOnDateSetListener() {
+    onDateSetListener = (view, year, month, dayOfMonth) -> {
+      presenter.onRateDateChange(DateUtil.getDateInMilis(dayOfMonth, month, year));
+    };
+  }
+
+  private void clearOnDateSetListener() {
+    onDateSetListener = null;
   }
   // ... MVP
 

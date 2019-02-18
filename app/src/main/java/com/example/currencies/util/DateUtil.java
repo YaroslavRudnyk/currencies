@@ -53,7 +53,7 @@ import java.util.GregorianCalendar;
   public static Calendar getCalendar(int date, int month, int year) {
     Calendar instance = GregorianCalendar.getInstance();
     instance.set(year, month, date);
-    return instance;
+    return removeTime(instance);
   }
 
   public static Calendar getCalendar(long time) {
@@ -68,11 +68,14 @@ import java.util.GregorianCalendar;
 
   public static long getCurrentDate() {
     Calendar calendar = getCalendar(System.currentTimeMillis());
+    return removeTime(calendar).getTimeInMillis();
+  }
+
+  public static Calendar removeTime(Calendar calendar) {
     calendar.set(Calendar.HOUR_OF_DAY, 0);
     calendar.set(Calendar.MINUTE, 0);
     calendar.set(Calendar.SECOND, 0);
     calendar.set(Calendar.MILLISECOND, 0);
-
-    return calendar.getTimeInMillis();
+    return calendar;
   }
 }

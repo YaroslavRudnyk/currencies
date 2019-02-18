@@ -10,6 +10,7 @@ import com.example.currencies.util.DateUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.inject.Inject;
 
 @InjectViewState public class CurrencyDetailFragmentPresenter extends
@@ -21,9 +22,7 @@ import javax.inject.Inject;
   @SuppressWarnings("WeakerAccess") @Inject DataRepository repository;
 
   private int currencyId;
-  private long rateDate = DateUtil.getCurrentDate();
-
-  private RateEntity rateEntity;
+  private AtomicLong rateDate = new AtomicLong(DateUtil.getCurrentDate());
 
   private Disposable rateChangeDisposable;
 
@@ -44,13 +43,14 @@ import javax.inject.Inject;
   }
 
   void onRateDateChange(long rateDate) {
-    this.rateDate = rateDate;
+    this.rateDate.set(rateDate);
     listenForRateChange();
     getCurrencyRate();
+    getViewState().showHideDatePicker(false);
   }
 
   void onDateClick() {
-    // TODO: open date picker dialog
+    getViewState().showHideDatePicker(true);
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -62,10 +62,11 @@ import javax.inject.Inject;
     disposeAndRemoveDisposable(rateChangeDisposable);
     rateChangeDisposable = subscribeToCurrencyRateChange();
     addDisposable(rateChangeDisposable);
+    //addDisposable(subscribeToCurrencyRateChange());
   }
 
   private Disposable subscribeToCurrencyRateChange() {
-    return repository.listenForCurrencyRateUpdates(currencyId, rateDate)
+    return repository.listenForCurrencyRateUpdates(currencyId, rateDate.get())
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
         .filter(rate -> !rate.equals(RateEntity.EMPTY))
@@ -74,8 +75,7 @@ import javax.inject.Inject;
   }
 
   private void handleCurrencyRateChange(RateEntity rateEntity) {
-    //Log.i(TAG, "DBG_PRESENTER: handleCurrencyRateChange " + rateEntity);
-    //if (rateEntity.equals(RateEntity.EMPTY)) return;
+    if (rateEntity.equals(RateEntity.EMPTY)) return;
     getViewState().updateRate(rateEntity);
   }
 
@@ -91,7 +91,7 @@ import javax.inject.Inject;
   }
 
   private Disposable subscribeToGetCurrencyRate() {
-    return repository.getCurrencyRate(currencyId, rateDate)
+    return repository.getCurrencyRate(currencyId, rateDate.get())
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(this::handleCurrencyRate, this::handleCurrencyRateException);
@@ -102,6 +102,7 @@ import javax.inject.Inject;
       fetchCurrencyRates();
       return;
     }
+
     setRateEntity(rateEntity);
   }
 
@@ -117,8 +118,8 @@ import javax.inject.Inject;
   }
 
   private Disposable subscribeToFetchCurrencyRate() {
-    return repository.fetchCurrencyRates(rateDate)
-        .observeOn(Schedulers.io())
+    return repository.fetchCurrencyRates(rateDate.get())
+        .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(() -> Log.i(TAG,
             "DBG_PRESENTER: fetchCurrencyRates(" + currencyId + ", " + rateDate + ") success"),
@@ -135,7 +136,6 @@ import javax.inject.Inject;
   // ... FetchCurrencyRate
 
   private void setRateEntity(RateEntity rateEntity) {
-    this.rateEntity = rateEntity;
     getViewState().updateRate(rateEntity);
   }
 }
