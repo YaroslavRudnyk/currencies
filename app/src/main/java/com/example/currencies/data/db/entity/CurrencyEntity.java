@@ -9,23 +9,33 @@ import com.pushtorefresh.storio3.sqlite.annotations.StorIOSQLiteType;
 @SuppressWarnings("unused") @StorIOSQLiteType(table = CurrenciesTable.TABLE)
 public class CurrencyEntity implements DbEntity {
 
+  public static final int EMPTY_IS_FAVORITE = -1;
+
   @StorIOSQLiteColumn(name = CurrenciesTable.COLUMN_ID, key = true) Long _id;
   @StorIOSQLiteColumn(name = CurrenciesTable.COLUMN_CURRENCY_ID) Integer currencyId;
   @StorIOSQLiteColumn(name = CurrenciesTable.COLUMN_NAME) String name;
   @StorIOSQLiteColumn(name = CurrenciesTable.COLUMN_CODE) String code;
+  @StorIOSQLiteColumn(name = CurrenciesTable.COLUMN_IS_FAVORITE) Integer isFavorite =
+      EMPTY_IS_FAVORITE;
 
   public CurrencyEntity() {
   }
 
   public CurrencyEntity(Integer currencyId, String name, String code) {
-    this(null, currencyId, name, code);
+    this(null, currencyId, name, code, EMPTY_IS_FAVORITE);
   }
 
-  public CurrencyEntity(Long _id, Integer currencyId, String name, String code) {
+  public CurrencyEntity(Integer currencyId, String name, String code, Integer isFavorite) {
+    this(null, currencyId, name, code, isFavorite);
+  }
+
+  public CurrencyEntity(Long _id, Integer currencyId, String name, String code,
+      Integer isFavorite) {
     this._id = (_id != null && _id != 0) ? _id : null;
     this.currencyId = currencyId;
     this.name = name;
     this.code = code;
+    this.isFavorite = isFavorite;
   }
 
   @Override public boolean equals(@Nullable Object obj) {
@@ -50,7 +60,8 @@ public class CurrencyEntity implements DbEntity {
         + "_id= \'" + _id + "\'; "
         + "currencyId= \'" + currencyId + "\'; "
         + "name= \'" + name + "\'; "
-        + "code= \'" + code + "\'}";
+        + "code= \'" + code + "\'; "
+        + "isFavorite= \'" + isFavorite + "\'}";
   }
 
   public Long get_id() {
@@ -85,6 +96,18 @@ public class CurrencyEntity implements DbEntity {
     this.code = code;
   }
 
+  public Integer isFavorite() {
+    return isFavorite;
+  }
+
+  public void setFavorite(Integer isFavorite) {
+    this.isFavorite = isFavorite;
+  }
+
+  public void toggleIsFavorite() {
+    isFavorite = (isFavorite > 0) ? 0 : 1;
+  }
+
   @Override public boolean differs(DbEntity entity) {
     if (!(entity instanceof CurrencyEntity)) return true;
     CurrencyEntity that = (CurrencyEntity) entity;
@@ -94,6 +117,7 @@ public class CurrencyEntity implements DbEntity {
     if (currencyId != null ? !currencyId.equals(that.currencyId) : that.currencyId != null)
       return true;
     if (name != null ? !name.equals(that.name) : that.name != null) return true;
-    return code != null ? !code.equals(that.code) : that.code != null;
+    if (code != null ? !code.equals(that.code) : that.code != null) return true;
+    return isFavorite != null ? !isFavorite.equals(that.isFavorite) : that.isFavorite != null;
   }
 }

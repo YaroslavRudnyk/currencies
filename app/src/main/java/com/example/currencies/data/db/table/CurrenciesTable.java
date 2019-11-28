@@ -13,8 +13,13 @@ public class CurrenciesTable {
   @NonNull public static final String COLUMN_CURRENCY_ID = "currency_id";
   @NonNull public static final String COLUMN_NAME = "name";
   @NonNull public static final String COLUMN_CODE = "code";
+  @NonNull public static final String COLUMN_IS_FAVORITE = "is_favorite";
 
   @NonNull public static final Query QUERY_ALL = Query.builder().table(TABLE).build();
+  @NonNull public static final Query QUERY_ALL_SORTED = Query.builder()
+      .table(TABLE)
+      .orderBy(COLUMN_IS_FAVORITE + " DESC, " + COLUMN_CURRENCY_ID)
+      .build();
 
   public CurrenciesTable() {
     throw new IllegalStateException("No instances allowed");
@@ -27,6 +32,7 @@ public class CurrenciesTable {
         + COLUMN_CURRENCY_ID + " INTEGER UNIQUE, "
         + COLUMN_NAME + " TEXT NULL, "
         + COLUMN_CODE + " TEXT NULL "
+        + COLUMN_IS_FAVORITE + " INTEGER "
         + ");";
   }
 

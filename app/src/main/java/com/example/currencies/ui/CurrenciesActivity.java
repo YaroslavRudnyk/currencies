@@ -91,7 +91,15 @@ public class CurrenciesActivity extends BaseActivity implements CurrenciesActivi
   }
 
   private void setupAdapter() {
-    currenciesAdapter.setItemListener(entity -> presenter.onCurrencyClick(entity));
+    currenciesAdapter.setItemListener(new CurrenciesAdapter.ItemListener() {
+      @Override public void onClick(CurrencyEntity entity) {
+        presenter.onCurrencyClick(entity);
+      }
+
+      @Override public void onFavoriteClick(CurrencyEntity entity) {
+        presenter.onFavoriteCurrencyClick(entity);
+      }
+    });
   }
 
   private void setupRecyclerView() {

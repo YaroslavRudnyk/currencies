@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 public class CurrencyRateWorker {
 
-  @Inject StorIOSQLite storIOSQLite;
+  @SuppressWarnings("WeakerAccess") @Inject StorIOSQLite storIOSQLite;
 
   public CurrencyRateWorker() {
     App.getAppComponent().inject(this);

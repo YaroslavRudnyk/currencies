@@ -15,7 +15,6 @@ import com.example.currencies.data.db.resolver.rate.RateGetResolver;
 import com.example.currencies.data.db.resolver.rate.RatePutResolver;
 import com.example.currencies.data.db.worker.CurrencyRateWorker;
 import com.example.currencies.data.db.worker.CurrencyWorker;
-import com.example.currencies.data.db.worker.EntityWorker;
 import com.example.currencies.data.db.worker.RateWorker;
 import com.example.currencies.di.scope.AppScope;
 import com.pushtorefresh.storio3.sqlite.SQLiteTypeMapping;
@@ -23,12 +22,8 @@ import com.pushtorefresh.storio3.sqlite.StorIOSQLite;
 import com.pushtorefresh.storio3.sqlite.impl.DefaultStorIOSQLite;
 import dagger.Module;
 import dagger.Provides;
-import javax.inject.Named;
 
 @Module public class DbModule {
-
-  public static final String NAME_WORKER_CURRENCY = "name_worker_currency";
-  public static final String NAME_WORKER_RATE = "name_worker_rate";
 
   @Provides @AppScope DbManager provideDbManager() {
     return new StorIoDbManager();
@@ -60,11 +55,11 @@ import javax.inject.Named;
   }
 
   // Workers ...
-  @Provides @AppScope @Named(NAME_WORKER_CURRENCY) EntityWorker provideCurrencyWorker() {
+  @Provides @AppScope CurrencyWorker provideCurrencyWorker() {
     return new CurrencyWorker();
   }
 
-  @Provides @AppScope @Named(NAME_WORKER_RATE) EntityWorker provideRateWorker() {
+  @Provides @AppScope RateWorker provideRateWorker() {
     return new RateWorker();
   }
 

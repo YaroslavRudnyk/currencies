@@ -49,6 +49,10 @@ public class Repository implements DataRepository {
     return dbManager.getCurrencyRate(currencyId, rateTime);
   }
 
+  @Override public Completable setCurrencyFavorite(CurrencyEntity currency) {
+    return dbManager.putCurrency(currency);
+  }
+
   ///////////////////////////////////////////////////////////////////////////
   // PRIVATE SECTION
   ///////////////////////////////////////////////////////////////////////////

@@ -18,4 +18,6 @@ public interface DataRepository {
   Flowable<RateEntity> listenForCurrencyRateUpdates(int currencyId, long rateDate);
 
   Single<RateEntity> getCurrencyRate(int currencyId, long rateTime);
+
+  Completable setCurrencyFavorite(CurrencyEntity currency);
 }

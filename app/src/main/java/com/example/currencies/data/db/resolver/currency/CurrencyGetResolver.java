@@ -21,6 +21,7 @@ public class CurrencyGetResolver extends DefaultGetResolver<CurrencyEntity> {
     }
     object.setName(cursor.getString(cursor.getColumnIndex(CurrenciesTable.COLUMN_NAME)));
     object.setCode(cursor.getString(cursor.getColumnIndex(CurrenciesTable.COLUMN_CODE)));
+    object.setFavorite(cursor.getInt(cursor.getColumnIndex(CurrenciesTable.COLUMN_IS_FAVORITE)));
 
     return object;
   }

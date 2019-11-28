@@ -4,26 +4,20 @@ import com.example.currencies.App;
 import com.example.currencies.data.db.entity.CurrencyEntity;
 import com.example.currencies.data.db.entity.RateEntity;
 import com.example.currencies.data.db.worker.CurrencyRateWorker;
-import com.example.currencies.data.db.worker.EntityWorker;
+import com.example.currencies.data.db.worker.CurrencyWorker;
 import com.example.currencies.data.db.worker.RateWorker;
-import com.pushtorefresh.storio3.sqlite.StorIOSQLite;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-import javax.inject.Named;
-
-import static com.example.currencies.di.module.data.DbModule.NAME_WORKER_CURRENCY;
-import static com.example.currencies.di.module.data.DbModule.NAME_WORKER_RATE;
 
 @SuppressWarnings("unchecked") public class StorIoDbManager implements DbManager {
 
-  @Inject StorIOSQLite storIOSQLite;
-  @Inject @Named(NAME_WORKER_CURRENCY) EntityWorker currencyWorker;
-  @Inject @Named(NAME_WORKER_RATE) EntityWorker rateWorker;
-  @Inject CurrencyRateWorker currencyRateWorker;
+  @SuppressWarnings("WeakerAccess") @Inject CurrencyWorker currencyWorker;
+  @SuppressWarnings("WeakerAccess") @Inject RateWorker rateWorker;
+  @SuppressWarnings("WeakerAccess") @Inject CurrencyRateWorker currencyRateWorker;
 
   public StorIoDbManager() {
     App.getAppComponent().inject(this);

@@ -9,7 +9,7 @@ import com.example.currencies.data.db.table.RatesTable;
 public class DbHelper extends SQLiteOpenHelper {
 
   public static final String DB_NAME = "db_currencies";
-  public static final int DB_VERSION = 1;
+  public static final int DB_VERSION = 2;
 
   public DbHelper(Context context) {
     super(context, DB_NAME, null, DB_VERSION);
@@ -25,12 +25,21 @@ public class DbHelper extends SQLiteOpenHelper {
   }
 
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    // implement migrations here
+    if (oldVersion < 2)
+      updateToV2(db);
   }
 
   ///////////////////////////////////////////////////////////////////////////
   // PRIVATE SECTION
   ///////////////////////////////////////////////////////////////////////////
+
+  private void updateToV2(SQLiteDatabase db) {
+    db.execSQL("ALTER TABLE "
+        + CurrenciesTable.TABLE
+        + " ADD COLUMN "
+        + CurrenciesTable.COLUMN_IS_FAVORITE
+        + " INTEGER DEFAULT 0");
+  }
 
   private void createDbTables(SQLiteDatabase db) {
     // Currencies

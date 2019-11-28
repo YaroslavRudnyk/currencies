@@ -22,7 +22,7 @@ public class CurrencyWorker implements EntityWorker {
 
   private static final String TAG = CurrencyWorker.class.getSimpleName();
 
-  @Inject StorIOSQLite storIOSQLite;
+  @SuppressWarnings("WeakerAccess") @Inject StorIOSQLite storIOSQLite;
 
   public CurrencyWorker() {
     App.getAppComponent().inject(this);
@@ -77,7 +77,7 @@ public class CurrencyWorker implements EntityWorker {
   @Override public Flowable<List<CurrencyEntity>> listenForUpdates() {
     return storIOSQLite.get()
         .listOfObjects(CurrencyEntity.class)
-        .withQuery(CurrenciesTable.QUERY_ALL)
+        .withQuery(CurrenciesTable.QUERY_ALL_SORTED)
         .prepare()
         .asRxFlowable(BackpressureStrategy.LATEST);
   }

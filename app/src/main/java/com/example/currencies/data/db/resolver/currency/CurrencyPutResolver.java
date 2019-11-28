@@ -39,12 +39,14 @@ public class CurrencyPutResolver extends DefaultPutResolver<CurrencyEntity> {
   }
 
   @NonNull @Override protected ContentValues mapToContentValues(@NonNull CurrencyEntity object) {
-    ContentValues contentValues = new ContentValues(4);
+    ContentValues contentValues = new ContentValues(5);
 
     contentValues.put(CurrenciesTable.COLUMN_ID, object.get_id());
     contentValues.put(CurrenciesTable.COLUMN_CURRENCY_ID, object.getCurrencyId());
     contentValues.put(CurrenciesTable.COLUMN_NAME, object.getName());
     contentValues.put(CurrenciesTable.COLUMN_CODE, object.getCode());
+    if (object.isFavorite() != CurrencyEntity.EMPTY_IS_FAVORITE)
+      contentValues.put(CurrenciesTable.COLUMN_IS_FAVORITE, object.isFavorite() > 0 ? 1 : 0);
 
     return contentValues;
   }

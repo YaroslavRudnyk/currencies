@@ -34,11 +34,18 @@ import javax.inject.Inject;
     getViewState().showCurrencyDetails(entity);
   }
 
+  void onFavoriteCurrencyClick(CurrencyEntity entity) {
+    CurrencyEntity newEntity =
+        new CurrencyEntity(entity.get_id(), entity.getCurrencyId(), entity.getName(),
+            entity.getCode(), entity.isFavorite());
+    newEntity.toggleIsFavorite();
+    addDisposable(subscribeToToggleCurrencyFavorite(newEntity));
+  }
+
   ///////////////////////////////////////////////////////////////////////////
   // PRIVATE SECTION
   ///////////////////////////////////////////////////////////////////////////
 
-  //
   private Disposable subscribeToCurrenciesChanges() {
     return dataRepository.listenForCurrenciesUpdates()
         .subscribeOn(Schedulers.io())
@@ -73,4 +80,17 @@ import javax.inject.Inject;
             });
   }
   // ... fetchCurrencyRates
+
+  // toggleFavoriteCurrency ...
+  private Disposable subscribeToToggleCurrencyFavorite(CurrencyEntity entity) {
+    return dataRepository.setCurrencyFavorite(entity)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(() -> Log.d(TAG, "DBG_UI: toggleCurrencyFavorite success"),
+            t -> {
+              Log.e(TAG, "DBG_UI: toggleCurrencyFavorite exception: " + t.toString());
+              t.printStackTrace();
+            });
+  }
+  // ... toggleFavoriteCurrency
 }

@@ -17,4 +17,8 @@
 
   <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+  <style name="FavoriteButtonStyle" parent="Widget.AppCompat.Button">
+    <item name="android:background">@drawable/button_toggle_favorite</item>
+  </style>
+
 </resources>

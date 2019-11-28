@@ -23,7 +23,7 @@ public class RateWorker implements EntityWorker {
 
   private static final String TAG = RateWorker.class.getSimpleName();
 
-  @Inject StorIOSQLite storIOSQLite;
+  @SuppressWarnings("WeakerAccess") @Inject StorIOSQLite storIOSQLite;
 
   public RateWorker() {
     App.getAppComponent().inject(this);
